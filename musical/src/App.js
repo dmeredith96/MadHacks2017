@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Simon from './Simon';
 import './App.css';
 import {slide as Menu} from 'react-burger-menu';
 
@@ -22,10 +23,7 @@ class App extends Component {
         </header>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>Hello {this.state.name}</p>
-        <Simon roomId='hello' />
-        <Simon roomId='world' />        
+        </p>       
       </div>
     );
   }

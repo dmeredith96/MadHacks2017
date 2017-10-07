@@ -13,12 +13,12 @@ class Simon extends Component {
     }
 
     componentWillReceiveProps() {
-        
+
     }
 
     render() {
         return(
-            <div>We are at the simon component with ROomId: {this.state.roomId}</div>
+            <div></div>
         );
     }
 }
