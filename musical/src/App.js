@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import Simon from './Simon';
+import ReactDOM from 'react-dom';
 import './App.css';
 import {slide as Menu} from 'react-burger-menu';
+import Simon from './Simon';
+import LandingPage from './LandingPage';
 
 class App extends Component {
 
@@ -10,20 +11,26 @@ class App extends Component {
 
   }
 
+  renderNewHome () {
+    ReactDOM.render(<LandingPage/>, document.getElementById("Main"));    
+  }
+
+  renderNewSimon () {
+    ReactDOM.render(<Simon/>, document.getElementById("Main"));
+  }
+
   render() {
     return (
       <div className="App">
-        <Menu>
-          <div className="menu-item">Home</div>
-          <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
-        </Menu>
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>       
+        <div className="Menu">
+          <Menu>
+            <a onClick={ this.renderNewHome }>Home</a>
+            <a onClick={ this.renderNewSimon }>Simon</a>
+          </Menu>
+        </div>
+        <div id="Main">
+          <LandingPage/>
+        </div>     
       </div>
     );
   }

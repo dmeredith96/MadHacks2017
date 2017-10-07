@@ -1,0 +1,20 @@
+.Container {
+    text-align: center;
+    height: 100%;
+}
+
+.Simon-container {
+    float:left;
+    width:80%;
+    height:100%;
+}
+
+.Game-info {
+    height:30%;
+    top:0;
+}
+
+.Game-board {
+    height:70%;
+    bottom:0;
+}
