@@ -4,6 +4,9 @@ import './Scoreboard.css';
 class Scoreboard extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            
+        }
     }
 
     render() {

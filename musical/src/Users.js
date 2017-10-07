@@ -4,6 +4,9 @@ import './Users.css';
 class Users extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            
+        }
     }
 
     render(){
