@@ -5,15 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
-  <script>
-    var socket = io.connect('http://localhost');
-    socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' });
-    });
-
-  </script>
-  <script src="/client-socket.js"></script>
   <meta name="theme-color" content="#000000">
   <!--
       manifest.json provides metadata used when your web app is added to the
