@@ -24,6 +24,7 @@ class App extends Component {
       <div className="App">
         <div className="Menu">
           <Menu>
+            <h2>Musical Simon</h2>
             <a onClick={ this.renderNewHome }>Home</a>
             <a onClick={ this.renderNewSimon }>Simon</a>
           </Menu>

@@ -6,6 +6,9 @@ import Scoreboard from './Scoreboard';
 class RoomInfo extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            
+        }
     }
 
     render(){
