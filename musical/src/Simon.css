@@ -7,6 +7,7 @@
     float:left;
     width:80%;
     height:100%;
+    background-color: #b1cbbb;
 }
 
 .Game-info {
@@ -17,6 +18,15 @@
 .Game-board {
     height:70%;
     bottom:0;
+    background-color: #5A876B;
+}
+
+.gameboard-table{
+  margin: 0 auto;
+}
+
+.gameboard-table td{
+  padding: 10 10 10 10;
 }
 
 .btn-blue {

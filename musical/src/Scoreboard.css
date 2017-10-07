@@ -1,4 +1,10 @@
 .Scoreboard-container {
     height: 50%;
     bottom: 0;
+    background-color:#334746;
+}
+
+h2.scoreboard-header {
+    text-align: center;
+    padding-top: 15px;
 }

@@ -20,16 +20,21 @@ class Simon extends Component {
             <div className="Container">
                 <div className="Simon-container">
                     <div className="Game-info">
-                        <h2>Game Information</h2>
+                        <h2 classname="current-gm">Current GM: {}</h2>
+                        <h2>GM choosing / Sequence Playing / GO!</h2>
+                        <h2>Remaining Time: {}</h2>
                     </div>
                     <div className="Game-board">
-                        <h2>Game Board</h2>
-                        <button className="btn-blue">C</button>
-                        <button className="btn-green">G</button>
-                        <button className="btn-red">Am</button>
-                        <button className="btn-purp">F</button>
-                        
-                        
+                        <table className="gameboard-table">
+                            <tr>
+                                <td><button className="btn-blue">C</button></td>
+                                <td><button className="btn-green">G</button></td>
+                            </tr>
+                            <tr>
+                                <td><button className="btn-red">Am</button></td>
+                                <td><button className="btn-purp">F</button></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <RoomInfo/>

@@ -2,3 +2,11 @@
     height: 50%;
     top: 0;
 }
+
+h2.users-header {
+    text-align: center;
+}
+
+ul.users-list {
+    text-align: left;
+}
