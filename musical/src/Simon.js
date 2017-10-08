@@ -8,37 +8,31 @@ class Simon extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roomId: this.props.roomId || '',
-            room: null
+            roomId: this.props.match.params.room || '',
+            room: null,
+            didCreate: false
         }
     }
 
     componentDidMount() {
-        joinRoom(this.state.roomId, '',
-            (err) => this.callbackBadRoom(err),
-            (err, room) => this.callbackReadyToStart(err, room),
-            (err) => this.callbackHostSelectedStart(err),
-            (err, room) => this.callbackRoomJoined(err, room),
-            (err, user) => this.callbackUserJoined(err, user),
-            (err, selection) => this.callbackHostSelection(err, selection),
-            (err) => this.callbackUserGuessOpen(err),
-            (err) => this.callbackUserGuessClosed(err),
-            (err, userId) => this.callbackUserHasSubmitted(err, userId),
-            (err, socketId) => this.callbackUserDisconnected(err, socketId));
-        this.enterRoomId();
+        if (this.state.roomId === '') {
+            this.enterRoomId();
+            this.joinRoomAsComponent();
+        }
+        else {
+            createRoom(this.state.roomId, '',
+                (err) => this.callbackUnavailableRoomId(err),
+                (err, roomId) => this.callbackRoomCreated(err, roomId));
+        }
     }
 
-    enterRoomId() {
-        this.setState({
-            roomId: prompt('Enter a room ID: ')
-        });
-    }
+
 
     render() {
         if (this.state.room === null) {
             return (
                 <div className="loading-screen">
-                    Room ID Invalid!
+                    Connecting you to the room...
                 </div>
             );
         }
@@ -47,7 +41,7 @@ class Simon extends Component {
                 <div className="Container">
                     <div className="Simon-container">
                         <div className="Game-info">
-                            <h2>Current GM: {}</h2>
+                            <h2>Current GM: {this.state.room.hostId || 'This will be determined very soon...'}</h2>
                             <h2>GM choosing / Sequence Playing / GO!</h2>
                             <h2>Remaining Time: {}</h2>
                         </div>
@@ -64,6 +58,26 @@ class Simon extends Component {
                 </div>
             );
         }
+    }
+
+    enterRoomId() {
+        this.setState({
+            roomId: prompt('Enter a room ID: ')
+        });
+    }
+
+    joinRoomAsComponent() {
+        joinRoom(this.state.roomId, '', this.state.didCreate,
+            (err) => this.callbackBadRoom(err),
+            (err, room) => this.callbackReadyToStart(err, room),
+            (err) => this.callbackHostSelectedStart(err),
+            (err, room) => this.callbackRoomJoined(err, room),
+            (err, user) => this.callbackUserJoined(err, user),
+            (err, selection) => this.callbackHostSelection(err, selection),
+            (err) => this.callbackUserGuessOpen(err),
+            (err) => this.callbackUserGuessClosed(err),
+            (err, userId) => this.callbackUserHasSubmitted(err, userId),
+            (err, socketId) => this.callbackUserDisconnected(err, socketId));
     }
 
     callbackBadRoom(err) {
@@ -109,6 +123,15 @@ class Simon extends Component {
 
     callbackUserDisconnected(err, socketId) {
 
+    }
+
+    callbackRoomCreated(err, roomId) {
+        this.setState({roomId: roomId});
+        this.joinRoomAsComponent();
+    }
+
+    callbackUnavailableRoomId(err) {
+        this.joinRoomAsComponent();
     }
 }
 

@@ -1,19 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './LandingPage.css';
 import logo from './logo.svg';
 
 class LandingPage extends Component {
 
-    render () {
+    render() {
         return (
             <div>
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <h1 className="App-title">Welcome to React</h1>
-            </header>
-            <p className="App-intro">
-                To get started, edit <code>src/App.js</code> and save to reload.
-            </p> 
+                <h1>
+                    Welcome to Musical Simon!
+            </h1>
+                <div>
+                    Click on the burger menu in the top left to get started!
+            </div>
             </div>
         );
     }

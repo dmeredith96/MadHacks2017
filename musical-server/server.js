@@ -21,6 +21,7 @@ let connections = [];
 io.on('connection', function (socket) {
     //createRoom(roomId) - Checks to see if a room already exists, if not fire roomCreated, else unavailableRoomId
     socket.on('createRoom', function (data) {
+        console.log('user is creating a room');
         let roomExists = false;
         for (let room = 0; room < connections.length; room++) {
             if (connections[room].roomId === data.roomId) {
@@ -37,26 +38,35 @@ io.on('connection', function (socket) {
 
     //joinRoom(roomId) - Checks to see if the room exists, if not fire badRoomId, else roomJoined(connections[roomId]). If room is not isPlaying and user count is >2 fire gameIsReadyToStart(connections[roomId]) 
     socket.on('joinRoom', function (data) {
+        console.log('user is joining a room');
         let roomId = null;
         for (let room = 0; room < connections.length; room++) {
             if (connections[room].roomId === data.roomId) {
                 roomId = room;
-                socket.join(data.roomId);
-                var newUser = { socketId: socket.id, score: 0, isPlaying: false, submittedCombination: null };
-                connections[room].users.push(newUser);
+                if (!data.didCreate) {
+                    socket.join(data.roomId);
+                    var newUser = { socketId: socket.id, score: 0, isPlaying: false, submittedCombination: null };
+                    connections[room].users.push(newUser);
+                }
                 socket.emit('roomJoined', { room: connections[room] });
                 socket.to(data.roomId).emit('userJoined', { newUser });
-                if (connections[room].users.length >= 2) { //TODO: Add host confirmation
+                console.log('users length: ' + connections[room].users.length);
+                if (connections[room].users.length >= 2 && connections[room].isActive === false) { //TODO: Add host confirmation
                     var selectedHostIndex = Math.floor(Math.random() * connections[room].users.length);
-                    connections[room].hostId = connections[room].users[selectedHostIndex].id;
+                    connections[room].hostId = connections[room].users[selectedHostIndex].socketId;
+                    connections[room].isActive = true;
                     io.sockets.to(data.roomId).emit('gameIsReadyToStart', { room: connections[roomId] });
                     setTimeout(function () {
+                        console.log('hostIndex:' + selectedHostIndex);
+                        console.log(connections[room].users);
+                        console.log('host has been selected, notifying users that ' + connections[room].users[selectedHostIndex].socketId + ' is the host');
                         io.sockets.to(data.roomId).emit('hostSelectStarted');
                     }, 5000);
                 }
             }
         }
         if (roomId === null) {
+            console.log('user is joining a room and had a badroomid');
             socket.emit('badRoomId');
         }
     })
@@ -109,7 +119,7 @@ io.on('connection', function (socket) {
                     for (var j = 0; j < connections[i].users.length; j++) {
                         if (connections[i].users[j].socketId === socket.id) {
                             socket.to(room).emit('userDisconnected', { socketId: socket.id });
-                            connections[i].currentConnections.splice(j, 1);
+                            connections[i].users.splice(j, 1);
                             break;
                         }
                     }

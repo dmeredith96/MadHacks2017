@@ -19,10 +19,10 @@ class App extends Component {
     var isEntryIncorrect = true;
     while (isEntryIncorrect) {
       let roomId = prompt("What will you be known as on the page?");
-      if (typeof(roomId) == "string") {
+      if (typeof (roomId) == "string") {
         roomId = roomId.trim();
         if (roomId !== "") {
-          this.setState({roomId: roomId})
+          this.setState({ roomId: roomId })
           isEntryIncorrect = false;
         }
       }
@@ -56,6 +56,7 @@ class App extends Component {
             </Menu>
           </div>
           <div id="Main">
+            <Route path='/' component={LandingPage}/>
             <Route path='/simon/:room?' render={(props) => (<Simon {...props} roomId={this.state.roomId} />)} />
           </div>
         </div>
