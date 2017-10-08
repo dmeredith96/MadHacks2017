@@ -1,31 +1,28 @@
+import io from 'socket.io-client';
+
 var socket = io.connect('http://localhost');
-
-//badRoomId() - Room does not exist, notify user
-
-//roomJoined(connections[roomId]) - Room has been joined and user information will be sent
-
-//unavailableRoomId() - Room already exists
-
-//gameIsReadyToStart(connections[roomId]) - A host will have been selected and the game is beginning
-
-//gameIsCompleted(connections[roomId]) - All users have submitted their selections and the scores will be updated on this emission
-
-//userGuessOpen() - Allows for submissions from the user (enables input)
-
-//userHasSubmitted(users[id]) - Another user has submitted their answer
-
-//userGuessClosed(connections[roomId]) - Blocks user input - their time is up!
-
-//userDisconnected(user[id]) - Notifies of a user disconnect
-
-/********************* EMISSIONS *********************/
+socket.open();
 
 //joinRoom(roomId?) - Joins the specified room
+function joinRoom(roomId, userName, callbackBadRoomId) {
+    socket.emit('joinRoom', { roomId, userName });
+    socket.on('badRoomId', data => callbackBadRoom(null));
+    socket.on('gameIsReadyToStart', data => callbackReadyToStart(null, data.room));
+    socket.on('hostSelectedStart', data => callbackHostSelectedStart(null));
+    socket.on('roomJoined', data => callbackRoomJoined(null, data.room));
+    socket.on('userJoined', data => callbackUserJoined(null, data));
+    socket.on('hostSelection', data => callbackHostSelection(null, data.selection));
+    socket.on('userGuessOpen', data => callbackUserGuessOpen(null));
+    socket.on('userGuessClosed', data => callbackUserGuessClosed(null));
+    socket.on('userHasSubmitted', data => callbackUserHasSubmitted(null, data.userId));
+    socket.on('userDisconnected', data => callbackUserDisconnected(null, data.socketId));
+}
 
 //createRoom(roomId) - Creates the specified room
+function createRoom(roomId, userName, callbackUnavailableRoomId, callbackRoomCreated) {
+    socket.emit('createRoom', { roomId, userName });
+    socket.on('unavailableRoomId', data => callbackUnavailableRoomId(null));
+    socket.on('roomCreated', data => callbackRoomCreated(null, data.roomId));
+}
 
-//hostSubmittedChord(roomId, selection[]) - Submits the chord that others will guess
-
-//userSubmittedChord(roomId, selection[]) - Submit the chord that the user is guessing
-
-//disconnecting(roomId) - Notifies the server that the user is leaving the room
+export default { joinRoom, createRoom };
