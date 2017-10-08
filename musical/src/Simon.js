@@ -32,6 +32,7 @@ class Simon extends Component {
 
 
     render() {
+        console.log(this.state.socketId);
         if (this.state.room === null) {
             return (
                 <div className="loading-screen">
@@ -44,7 +45,7 @@ class Simon extends Component {
                 <div className="Container">
                     <div className="Simon-container">
                         <div className="Game-info">
-                            {this.state.socketId === this.state.room.hostId &&
+                            {this.state.room.hostId !== undefined && this.state.socketId == this.state.room.hostId &&
                                 <h2>Current GM: You are the GM!</h2>
                             }
                             {this.state.socketId !== this.state.room.hostId &&
@@ -97,11 +98,11 @@ class Simon extends Component {
     }
 
     callbackReadyToStart(err, room) {
-
+        this.setState({currentGameStatus: 'Game is starting soon...', room: room});
     }
 
     callbackHostSelectedStart(err) {
-
+        this.setState({currentGameStatus: 'Host is selecting'})
     }
 
     callbackRoomJoined(err, room, socketId) {
@@ -113,18 +114,19 @@ class Simon extends Component {
     }
 
     callbackUserJoined(err, user) {
+
     }
 
     callbackHostSelection(err, selection) {
-
+        this.setState({currentGameStatus: 'Host has selected'})
     }
 
     callbackUserGuessOpen(err) {
-
+        this.setState({currentGameStatus: 'You must select the same sequence as the host!'})
     }
 
     callbackUserGuessClosed(err) {
-
+        this.setState({currentGameStatus: 'User submissions are closed'});
     }
 
     callbackUserHasSubmitted(err, userId) {
@@ -136,7 +138,7 @@ class Simon extends Component {
     }
 
     callbackRoomCreated(err, roomId) {
-        this.setState({ roomId: roomId });
+        this.setState({ roomId: roomId, didCreate: true });
         this.joinRoomAsComponent();
     }
 
