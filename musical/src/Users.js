@@ -11,7 +11,7 @@ class Users extends Component {
 
     componentWillReceiveProps(newProps) {
         this.setState({
-            users: newProps.users.toArray()
+            users: newProps.users
         });
     }
 

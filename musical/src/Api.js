@@ -8,7 +8,7 @@ function joinRoom(roomId, userName, didCreate, callbackBadRoom, callbackReadyToS
     socket.emit('joinRoom', { roomId, userName, didCreate });
     socket.on('badRoomId', data => callbackBadRoom(null));
     socket.on('gameIsReadyToStart', data => callbackReadyToStart(null, data.room));
-    socket.on('hostSelectedStart', data => callbackHostSelectedStart(null));
+    socket.on('hostSelectStarted', data => callbackHostSelectedStart(null));
     socket.on('roomJoined', data => callbackRoomJoined(null, data.room, data.socketId));
     socket.on('userJoined', data => callbackUserJoined(null, data));
     socket.on('hostSelection', data => callbackHostSelection(null, data.selection));
@@ -27,4 +27,8 @@ function createRoom(roomId, userName, callbackUnavailableRoomId, callbackRoomCre
     socket.on('roomCreated', data => callbackRoomCreated(null, data.roomId));
 }
 
-export { joinRoom, createRoom };
+function hostSubmitSelection(roomId, selection) {
+    socket.emit('hostSubmittedChord', {roomId: roomId, selection: selection});
+}
+
+export { joinRoom, createRoom, hostSubmitSelection };

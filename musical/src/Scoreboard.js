@@ -11,7 +11,7 @@ class Scoreboard extends Component {
 
     componentWillReceiveProps(newProps) {
         this.setState({
-            players: newProps.sort(function (a, b) { return (a.score > b.score) ? 1 : ((b.score > a.score) ? -1 : 0); }).toArray()
+            players: newProps.players.sort(function (a, b) { return (a.score > b.score) ? 1 : ((b.score > a.score) ? -1 : 0); })
         });
     }
 

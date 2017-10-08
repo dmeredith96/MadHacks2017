@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Simon.css';
 import RoomInfo from './RoomInfo.js';
-import { joinRoom, createRoom } from './Api';
+import { joinRoom, createRoom, hostSubmitSelection } from './Api';
 import { ToastContainer, toast } from 'react-toastify';
 import Button from 'muicss/lib/react/button';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -16,8 +16,12 @@ class Simon extends Component {
             socketId: null,
             didCreate: false,
             currentGameStatus: 'Creating',
-            remainingTime: "Unknown"
+            remainingTime: "Unknown",
+            isSelecting: false,
+            currentSelection: []
         }
+        this.hostSubmit = this.hostSubmit.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
     }
 
     componentDidMount() {
@@ -60,17 +64,38 @@ class Simon extends Component {
                         </div>
                         <div className="Game-board">
                             <div className="gameboard-table">
-                                <button className="btn-blue">1</button>
-                                <button className="btn-green">2</button>
-                                <button className="btn-red">3</button>
-                                <button className="btn-purp">4</button>
+                                <input type='button' className="btn-blue" value='1' onClick={this.handleSelection} />
+                                <input type='button' className="btn-green" value='2' onClick={this.handleSelection} />
+                                <input type='button' className="btn-red" value='3' onClick={this.handleSelection} />
+                                <input type='button' className="btn-purp" value='4' onClick={this.handleSelection} />
                             </div>
                         </div>
+                        {this.state.isSelecting &&
+                            <div className="game-selection">
+                                <div className="user-selection">
+                                    Your current selection: {this.state.currentSelection.map(function (select, i) {
+                                        return <span key={i}>{select}</span>;
+                                    })}
+                                </div>
+                                <input type='button' className='btn-green' onClick={this.hostSubmit} />
+                            </div>
+                        }
                     </div>
                     <RoomInfo players={this.state.room.users} />
                 </div>
             );
         }
+    }
+
+    hostSubmit(event) {
+        hostSubmitSelection(this.state.roomId, this.state.currentSelection);
+        this.setState({currentSelection: null, isSelecting: false});
+    }
+
+    handleSelection(event) {
+        let currentSelection = this.state.currentSelection;
+        currentSelection.push(event.target.value);
+        this.setState({ currentSelection: currentSelection });
     }
 
     enterRoomId() {
@@ -106,7 +131,10 @@ class Simon extends Component {
     }
 
     callbackHostSelectedStart(err) {
-        this.setState({ currentGameStatus: 'Host is selecting' })
+        this.setState({ currentGameStatus: 'Host is selecting' });
+        if (this.state.room.hostId === this.state.socketId) {
+            this.setState({ isSelecting: true });
+        }
     }
 
     callbackRoomJoined(err, room, socketId) {
