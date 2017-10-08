@@ -29,7 +29,9 @@ class Simon extends Component {
     }
 
     enterRoomId() {
-        this.state.roomId = prompt('Enter a room ID: ');
+        this.setState({
+            roomId: prompt('Enter a room ID: ')
+        });
     }
 
     render() {
