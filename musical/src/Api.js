@@ -4,7 +4,7 @@ var socket = io.connect('http://localhost');
 socket.open();
 
 //joinRoom(roomId?) - Joins the specified room
-function joinRoom(roomId, userName, callbackBadRoomId) {
+function joinRoom(roomId, userName, callbackBadRoom, callbackReadyToStart, callbackHostSelectedStart, callbackRoomJoined, callbackUserJoined, callbackHostSelection, callbackUserGuessOpen, callbackUserGuessClosed, callbackUserHasSubmitted, callbackUserDisconnected) {
     socket.emit('joinRoom', { roomId, userName });
     socket.on('badRoomId', data => callbackBadRoom(null));
     socket.on('gameIsReadyToStart', data => callbackReadyToStart(null, data.room));
@@ -25,4 +25,4 @@ function createRoom(roomId, userName, callbackUnavailableRoomId, callbackRoomCre
     socket.on('roomCreated', data => callbackRoomCreated(null, data.roomId));
 }
 
-export default { joinRoom, createRoom };
+export { joinRoom, createRoom };

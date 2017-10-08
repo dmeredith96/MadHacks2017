@@ -14,7 +14,17 @@ class Simon extends Component {
     }
 
     componentDidMount() {
-        joinRoom(this.state.roomId, '', );
+        joinRoom(this.state.roomId, '', 
+            (err) => this.callbackBadRoom(err), 
+            (err, room) => this.callbackReadyToStart(err, room), 
+            (err) => this.callbackHostSelectedStart(err),
+            (err, room) => this.callbackRoomJoined(err, room), 
+            (err, user) => this.callbackUserJoined(err, user), 
+            (err, selection) => this.callbackHostSelection(err, selection), 
+            (err) => this.callbackUserGuessOpen(err), 
+            (err) => this.callbackUserGuessClosed(err),
+            (err, userId) => this.callbackUserHasSubmitted(err, userId), 
+            (err, socketId) => this.callbackUserDisconnected(err, socketId));
     }
 
     render() {
@@ -22,7 +32,7 @@ class Simon extends Component {
             <div className="Container">
                 <div className="Simon-container">
                     <div className="Game-info">
-                        <h2 classname="current-gm">Current GM: {}</h2>
+                        <h2 className="current-gm">Current GM: {}</h2>
                         <h2>GM choosing / Sequence Playing / GO!</h2>
                         <h2>Remaining Time: {}</h2>
                     </div>
@@ -44,8 +54,44 @@ class Simon extends Component {
         );
     }
 
-    callbackBadRoomId() {
-        
+    callbackBadRoom(err) {
+
+    }
+
+    callbackReadyToStart(err, room) {
+
+    }
+
+    callbackHostSelectedStart(err) {
+
+    }
+
+    callbackRoomJoined(err, room) {
+
+    }
+
+    callbackUserJoined(err, user) {
+
+    }
+
+    callbackHostSelection(err, selection) {
+
+    }
+
+    callbackUserGuessOpen(err) {
+
+    }
+
+    callbackUserGuessClosed(err) {
+
+    }
+
+    callbackUserHasSubmitted(err, userId) {
+
+    }
+
+    callbackUserDisconnected(err, socketId) {
+
     }
 }
 
