@@ -28,30 +28,40 @@ class Simon extends Component {
     }
 
     render() {
-        return (
-            <div className="Container">
-                <div className="Simon-container">
-                    <div className="Game-info">
-                        <h2>Current GM: {}</h2>
-                        <h2>GM choosing / Sequence Playing / GO!</h2>
-                        <h2>Remaining Time: {}</h2>
-                    </div>
-                    <div className="Game-board">
-                        <div className="gameboard-table">
-                            <button className="btn-blue">C</button>
-                            <button className="btn-green">G</button>
-                            <button className="btn-red">Am</button>
-                            <button className="btn-purp">F</button>
+        if (this.state.room === null) {
+            return (
+                <div className="loading-screen">Room ID Invalid!</div>
+            );
+        }
+        else {
+            return (
+                <div className="Container">
+                    <div className="Simon-container">
+                        <div className="Game-info">
+                            <h2>Current GM: {}</h2>
+                            <h2>GM choosing / Sequence Playing / GO!</h2>
+                            <h2>Remaining Time: {}</h2>
+                        </div>
+                        <div className="Game-board">
+                            <div className="gameboard-table">
+                                <button className="btn-blue">C</button>
+                                <button className="btn-green">G</button>
+                                <button className="btn-red">Am</button>
+                                <button className="btn-purp">F</button>
+                            </div>
                         </div>
                     </div>
+                    <RoomInfo />
                 </div>
-                <RoomInfo />
-            </div>
-        );
+            );
+        }
     }
 
     callbackBadRoom(err) {
-
+        this.setState({
+            room: null,
+            roomId: ''
+        })
     }
 
     callbackReadyToStart(err, room) {
