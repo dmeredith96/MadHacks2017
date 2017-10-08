@@ -7,15 +7,15 @@ class RoomInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            players: this.props.players
         }
     }
 
     render(){
         return(
             <div className="Room-info">
-                <Users/>
-                <Scoreboard/>
+                <Users users={this.state.players}/>
+                <Scoreboard players={this.state.players}/>
             </div>
         );
     }

@@ -5,8 +5,14 @@ class Users extends Component {
     constructor(props){
         super(props);
         this.state = {
-            users: []
+            users: this.props.users || []
         }
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            users: newProps.users.toArray()
+        });
     }
 
     render(){
@@ -15,7 +21,9 @@ class Users extends Component {
                 <h2 className="users-header">Users</h2>
                 <hr/>
                 <ul className="users-list">
-                    <li></li>
+                    {this.state.users.map(function(user, i){
+                        return <li key={ i }>{user.socketId}</li>;
+                    })}
                 </ul>
             </div>
         );

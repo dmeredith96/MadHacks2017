@@ -67,7 +67,7 @@ class Simon extends Component {
                             </div>
                         </div>
                     </div>
-                    <RoomInfo />
+                    <RoomInfo players={this.state.room.users} />
                 </div>
             );
         }

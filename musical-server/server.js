@@ -49,7 +49,7 @@ io.on('connection', function (socket) {
                     connections[room].users.push(newUser);
                 }
                 socket.emit('roomJoined', { room: connections[room], socketId: socket.id });
-                socket.to(data.roomId).emit('userJoined', { newUser });
+                socket.to(data.roomId).emit('userJoined', newUser);
                 if (connections[room].users.length >= 2 && connections[room].isActive === false) {
                     var selectedHostIndex = Math.floor(Math.random() * connections[room].users.length);
                     connections[room].hostId = connections[room].users[selectedHostIndex].socketId;
