@@ -28,12 +28,15 @@
     background-color: #CCC;
 }
 
-.gameboard-table{
+.gameboard-table {
+  display: inline-flex;
+  flex-wrap: wrap;
   margin: 0 auto;
 }
 
-.gameboard-table td{
-  padding: 10 10 10 10;
+.gameboard-table > button {
+  min-width: 250px;
+  max-width: 250px;
 }
 
 .btn-blue {
