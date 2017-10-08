@@ -9,7 +9,7 @@ function joinRoom(roomId, userName, didCreate, callbackBadRoom, callbackReadyToS
     socket.on('badRoomId', data => callbackBadRoom(null));
     socket.on('gameIsReadyToStart', data => callbackReadyToStart(null, data.room));
     socket.on('hostSelectedStart', data => callbackHostSelectedStart(null));
-    socket.on('roomJoined', data => callbackRoomJoined(null, data.room));
+    socket.on('roomJoined', data => callbackRoomJoined(null, data.room, data.socketId));
     socket.on('userJoined', data => callbackUserJoined(null, data));
     socket.on('hostSelection', data => callbackHostSelection(null, data.selection));
     socket.on('userGuessOpen', data => callbackUserGuessOpen(null));

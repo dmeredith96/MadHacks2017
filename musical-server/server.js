@@ -48,18 +48,14 @@ io.on('connection', function (socket) {
                     var newUser = { socketId: socket.id, score: 0, isPlaying: false, submittedCombination: null };
                     connections[room].users.push(newUser);
                 }
-                socket.emit('roomJoined', { room: connections[room] });
+                socket.emit('roomJoined', { room: connections[room], socketId: socket.id });
                 socket.to(data.roomId).emit('userJoined', { newUser });
-                console.log('users length: ' + connections[room].users.length);
-                if (connections[room].users.length >= 2 && connections[room].isActive === false) { //TODO: Add host confirmation
+                if (connections[room].users.length >= 2 && connections[room].isActive === false) {
                     var selectedHostIndex = Math.floor(Math.random() * connections[room].users.length);
                     connections[room].hostId = connections[room].users[selectedHostIndex].socketId;
                     connections[room].isActive = true;
                     io.sockets.to(data.roomId).emit('gameIsReadyToStart', { room: connections[roomId] });
                     setTimeout(function () {
-                        console.log('hostIndex:' + selectedHostIndex);
-                        console.log(connections[room].users);
-                        console.log('host has been selected, notifying users that ' + connections[room].users[selectedHostIndex].socketId + ' is the host');
                         io.sockets.to(data.roomId).emit('hostSelectStarted');
                     }, 5000);
                 }
@@ -92,7 +88,6 @@ io.on('connection', function (socket) {
                                 }
                                 connections[room].currentCombination = null;
                                 io.sockets.to(data.roomId).emit('roundHasCompleted', { room: connections[room] });
-                                //TODO: setup the next round
                             }, 30000);
                         }, 10000);
                     }

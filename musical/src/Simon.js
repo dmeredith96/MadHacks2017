@@ -10,7 +10,10 @@ class Simon extends Component {
         this.state = {
             roomId: this.props.match.params.room || '',
             room: null,
-            didCreate: false
+            socketId: null,
+            didCreate: false,
+            currentGameStatus: 'Creating',
+            remainingTime: "Unknown"
         }
     }
 
@@ -41,9 +44,14 @@ class Simon extends Component {
                 <div className="Container">
                     <div className="Simon-container">
                         <div className="Game-info">
-                            <h2>Current GM: {this.state.room.hostId || 'This will be determined very soon...'}</h2>
-                            <h2>GM choosing / Sequence Playing / GO!</h2>
-                            <h2>Remaining Time: {}</h2>
+                            {this.state.socketId === this.state.room.hostId &&
+                                <h2>Current GM: You are the GM!</h2>
+                            }
+                            {this.state.socketId !== this.state.room.hostId &&
+                                <h2>Current GM: {this.state.room.hostId || 'This will be determined very soon...'}</h2>
+                            }
+                            <h2>{this.state.currentGameStatus}</h2>
+                            <h2>Remaining Time: {this.state.remainingTime}</h2>
                         </div>
                         <div className="Game-board">
                             <div className="gameboard-table">
@@ -71,7 +79,7 @@ class Simon extends Component {
             (err) => this.callbackBadRoom(err),
             (err, room) => this.callbackReadyToStart(err, room),
             (err) => this.callbackHostSelectedStart(err),
-            (err, room) => this.callbackRoomJoined(err, room),
+            (err, room, socketId) => this.callbackRoomJoined(err, room, socketId),
             (err, user) => this.callbackUserJoined(err, user),
             (err, selection) => this.callbackHostSelection(err, selection),
             (err) => this.callbackUserGuessOpen(err),
@@ -96,10 +104,11 @@ class Simon extends Component {
 
     }
 
-    callbackRoomJoined(err, room) {
+    callbackRoomJoined(err, room, socketId) {
         this.setState({
             room: room,
-            roomId: room.roomId
+            roomId: room.roomId,
+            socketId: socketId
         })
     }
 
