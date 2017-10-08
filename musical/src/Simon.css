@@ -7,7 +7,9 @@
     float:left;
     width:80%;
     height:100%;
-    background-color: #b1cbbb;
+    border-right-style: solid;
+    border-right-color: black;
+    background-color: #666;
 }
 
 .Game-info {
@@ -15,10 +17,15 @@
     top:0;
 }
 
+  .Game-info h2{
+    text-align: left;
+    padding-left: 15px;
+  }
+
 .Game-board {
     height:70%;
     bottom:0;
-    background-color: #5A876B;
+    background-color: #CCC;
 }
 
 .gameboard-table{
