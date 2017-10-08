@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Simon.css';
 import RoomInfo from './RoomInfo.js';
-import { joinRoom, createRoom, hostSubmitSelection } from './Api';
+import { joinRoom, createRoom, hostSubmitSelection, userSubmitSelection } from './Api';
 import { ToastContainer, toast } from 'react-toastify';
 import $ from 'jquery';
 import Button from 'muicss/lib/react/button';
@@ -22,6 +22,7 @@ class Simon extends Component {
             currentSelection: []
         }
         this.hostSubmit = this.hostSubmit.bind(this);
+        this.userSubmit = this.userSubmit.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
     }
 
@@ -40,7 +41,6 @@ class Simon extends Component {
 
 
     render() {
-        console.log(this.state.socketId);
         if (this.state.room === null) {
             return (
                 <div className="loading-screen">
@@ -100,7 +100,12 @@ class Simon extends Component {
 
     hostSubmit(event) {
         hostSubmitSelection(this.state.roomId, this.state.currentSelection);
-        this.setState({currentSelection: null, isSelecting: false});
+        this.setState({ currentSelection: null, isSelecting: false });
+    }
+
+    userSubmit(event) {
+        userSubmitSelection(this.state.roomId, this.state.currentSelection);
+        this.setState({ currentSelection: null, isSelecting: false });
     }
 
     handleSelection(event) {
@@ -162,15 +167,20 @@ class Simon extends Component {
 
     callbackHostSelection(err, selection) {
         this.setState({ currentGameStatus: 'Host has selected' });
-        for (var i = 0; i < selection.length; i++) {
-            $('#btn' + selection[i]).css('color','#fff');
-            setTimeout(function() {
-                $('#btn' + selection[i]).css('color','unset');                
-            }, 500);
-        }
-        if (this.state.socketId !== this.state.room.hostId) {
-            this.setState({isSelecting: true})
-        }
+        // for (var i = 0; i < selection.length; i++) {
+        //     console.log($('#btn' + selection[i]));
+        //     $('#btn' + selection[i]).mouseenter(function() {
+        //         $(this).css('color', '#fff');
+        //     });
+        //     setTimeout(function () {
+        //         $('#btn' + selection[i]).mouseleave();
+        //     }, 1000);
+        // }
+        setTimeout(function () {
+            if (this.state.socketId !== this.state.room.hostId) {
+                this.setState({ isSelecting: true })
+            }
+        }.bind(this), 10000);
     }
 
     callbackUserGuessOpen(err) {
@@ -199,11 +209,11 @@ class Simon extends Component {
     }
 
     callbackRoundHasCompleted(err, room) {
-        this.setState({room: room})
+        this.setState({ room: room })
     }
 
     callbackMatchHasCompleted(err, room) {
-        this.setState({room: room});
+        this.setState({ room: room });
     }
 }
 
