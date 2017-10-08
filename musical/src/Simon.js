@@ -14,21 +14,21 @@ class Simon extends Component {
     }
 
     componentDidMount() {
-        joinRoom(this.state.roomId, '', 
-            (err) => this.callbackBadRoom(err), 
-            (err, room) => this.callbackReadyToStart(err, room), 
+        joinRoom(this.state.roomId, '',
+            (err) => this.callbackBadRoom(err),
+            (err, room) => this.callbackReadyToStart(err, room),
             (err) => this.callbackHostSelectedStart(err),
-            (err, room) => this.callbackRoomJoined(err, room), 
-            (err, user) => this.callbackUserJoined(err, user), 
-            (err, selection) => this.callbackHostSelection(err, selection), 
-            (err) => this.callbackUserGuessOpen(err), 
+            (err, room) => this.callbackRoomJoined(err, room),
+            (err, user) => this.callbackUserJoined(err, user),
+            (err, selection) => this.callbackHostSelection(err, selection),
+            (err) => this.callbackUserGuessOpen(err),
             (err) => this.callbackUserGuessClosed(err),
-            (err, userId) => this.callbackUserHasSubmitted(err, userId), 
+            (err, userId) => this.callbackUserHasSubmitted(err, userId),
             (err, socketId) => this.callbackUserDisconnected(err, socketId));
     }
 
     render() {
-        return(
+        return (
             <div className="Container">
                 <div className="Simon-container">
                     <div className="Game-info">
@@ -37,19 +37,15 @@ class Simon extends Component {
                         <h2>Remaining Time: {}</h2>
                     </div>
                     <div className="Game-board">
-                        <table className="gameboard-table">
-                            <tr>
-                                <td><button className="btn-blue">C</button></td>
-                                <td><button className="btn-green">G</button></td>
-                            </tr>
-                            <tr>
-                                <td><button className="btn-red">Am</button></td>
-                                <td><button className="btn-purp">F</button></td>
-                            </tr>
-                        </table>
+                        <div className="gameboard-table">
+                            <button className="btn-blue">C</button>
+                            <button className="btn-green">G</button>
+                            <button className="btn-red">Am</button>
+                            <button className="btn-purp">F</button>
+                        </div>
                     </div>
                 </div>
-                <RoomInfo/>
+                <RoomInfo />
             </div>
         );
     }
