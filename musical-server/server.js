@@ -79,17 +79,24 @@ io.on('connection', function (socket) {
                     connections[room].roundCount++;
                     connections[room].currentCombination = data.selection;
                     io.sockets.to(data.roomId).emit('hostSelection', { selection: data.selection });
-                    //TODO: Set the timeout for the following function to be equal to the hostSelection timer instead of just 10 seconds
-                    setTimeout(function () {
-                        io.sockets.to(data.roomId).emit('userGuessOpen');
+                    for (let rounds = 0; rounds < 10; rounds++) {
                         setTimeout(function () {
-                            io.sockets.to(data.roomId).emit('userGuessClosed');
-                            //TODO: Tabulate user scores
-                            //TODO: Clear current combination
-                            //TODO: Clear all user guesses
-                            //TODO: Fire off a final event with all tabulated data to clients and setup the next round
-                        }, 30000);
-                    }, 10000);
+                            io.sockets.to(data.roomId).emit('userGuessOpen');
+                            setTimeout(function () {
+                                io.sockets.to(data.roomId).emit('userGuessClosed');
+                                for (let tabulation = 0; tabulation < connections[room].users; tabulation++) {
+                                    if (connections[room].users[tabulation].socketId !== connections[room].hostId && connections[room].users[tabulation].submittedCombination === connections[room].currentCombination) {
+                                        connections[room].users[tabulation].score++;
+                                    }
+                                    connections[room].users[tabulation].submittedCombination = null;
+                                }
+                                connections[room].currentCombination = null;
+                                io.sockets.to(data.roomId).emit('roundHasCompleted', { room: connections[room] });
+                                //TODO: setup the next round
+                            }, 30000);
+                        }, 10000);
+                    }
+                    io.sockets.to(data.roomId).emit('matchHasCompleted', { room: connections[room] });
                 }
             }
         }

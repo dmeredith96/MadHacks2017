@@ -16,6 +16,8 @@ function joinRoom(roomId, userName, didCreate, callbackBadRoom, callbackReadyToS
     socket.on('userGuessClosed', data => callbackUserGuessClosed(null));
     socket.on('userHasSubmitted', data => callbackUserHasSubmitted(null, data.userId));
     socket.on('userDisconnected', data => callbackUserDisconnected(null, data.socketId));
+    socket.on('roundHasCompleted', data => callbackRoundHasCompleted(null, data.room));
+    socket.on('matchHasCompleted', data => callbackMatchHasCompleted(null, data.room));
 }
 
 //createRoom(roomId) - Creates the specified room

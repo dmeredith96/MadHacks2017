@@ -47,10 +47,10 @@ class Simon extends Component {
                         </div>
                         <div className="Game-board">
                             <div className="gameboard-table">
-                                <button className="btn-blue">C</button>
-                                <button className="btn-green">G</button>
-                                <button className="btn-red">Am</button>
-                                <button className="btn-purp">F</button>
+                                <button className="btn-blue">1</button>
+                                <button className="btn-green">2</button>
+                                <button className="btn-red">3</button>
+                                <button className="btn-purp">4</button>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,9 @@ class Simon extends Component {
             (err) => this.callbackUserGuessOpen(err),
             (err) => this.callbackUserGuessClosed(err),
             (err, userId) => this.callbackUserHasSubmitted(err, userId),
-            (err, socketId) => this.callbackUserDisconnected(err, socketId));
+            (err, socketId) => this.callbackUserDisconnected(err, socketId),
+            (err, room) => this.callbackRoundHasCompleted(err, room),
+            (err, room) => this.callbackMatchHasCompleted(err, room));
     }
 
     callbackBadRoom(err) {
@@ -132,6 +134,14 @@ class Simon extends Component {
 
     callbackUnavailableRoomId(err) {
         this.joinRoomAsComponent();
+    }
+
+    callbackRoundHasCompleted(err, room) {
+
+    }
+
+    callbackMatchHasCompleted(err, room) {
+
     }
 }
 
