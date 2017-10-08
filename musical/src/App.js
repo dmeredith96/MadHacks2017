@@ -7,37 +7,57 @@ import Simon from './Simon';
 import LandingPage from './LandingPage';
 
 class App extends Component {
-
-  renderNewHome() {
-    ReactDOM.render(<LandingPage />, document.getElementById("Main"));
+  constructor(props) {
+    super(props);
+    this.state = {
+      roomId: null
+    }
+    this.getRoomId = this.getRoomId.bind(this);
   }
 
-  renderNewSimon(roomId) {
-    ReactDOM.render(<Simon />, document.getElementById("Main"));
+  getRoomId() {
+    var isEntryIncorrect = true;
+    while (isEntryIncorrect) {
+      let roomId = prompt("What will you be known as on the page?");
+      if (typeof(roomId) == "string") {
+        roomId = roomId.trim();
+        if (roomId !== "") {
+          this.setState({roomId: roomId})
+          isEntryIncorrect = false;
+        }
+      }
+      if (roomId === null) {
+        isEntryIncorrect = false;
+      }
+    }
   }
 
   render() {
     return (
       <Router>
         <div className="App">
-          <div className="Menu">
-            <Link to='/'>
-              <div onClick={this.renderNewHome} className="menu-item" title="Home">
-                <i className="fa fa-home white-menu-icon"></i>
+          <div className="menu">
+            <Menu>
+              <Link to='/'>
+                <div onClick={this.renderNewHome} className="menu-item" title="Home">
+                  <i className="fa fa-home white-menu-icon"></i>Home
               </div>
-            </Link>
-            <hr />
-            <Link to='/simon'>
-              <div onClick={this.renderNewSimon} className="menu-item" title="New Simon Game">
-                <i className="fa fa-gamepad white-menu-icon"></i>
+              </Link>
+              <Link to='/simon'>
+                <div className="menu-item" onClick={this.enterRoomId} title="New Simon Game">
+                  <i className="fa fa-gamepad white-menu-icon"></i>Create Game
               </div>
-            </Link>
-            <hr />
+              </Link>
+              <Link to='/simon'>
+                <div className="menu-item" title="New Simon Game">
+                  <i className="fa fa-gamepad white-menu-icon"></i>Join Game
+              </div>
+              </Link>
+            </Menu>
           </div>
           <div id="Main">
-            <LandingPage />
+            <Route path='/simon/:room?' render={(props) => (<Simon {...props} roomId={this.state.roomId} />)} />
           </div>
-          <Route path='/simon/:roomId?' Component={Simon} />
         </div>
       </Router>
     );
