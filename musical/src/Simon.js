@@ -83,10 +83,9 @@ class Simon extends Component {
     }
 
     callbackBadRoom(err) {
-        this.setState({
-            room: null,
-            roomId: ''
-        })
+        createRoom(this.state.roomId, '',
+            (err) => this.callbackUnavailableRoomId(err),
+            (err, roomId) => this.callbackRoomCreated(err, roomId));
     }
 
     callbackReadyToStart(err, room) {
@@ -128,7 +127,7 @@ class Simon extends Component {
     }
 
     callbackRoomCreated(err, roomId) {
-        this.setState({roomId: roomId});
+        this.setState({ roomId: roomId });
         this.joinRoomAsComponent();
     }
 
