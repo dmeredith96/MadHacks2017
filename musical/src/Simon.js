@@ -73,11 +73,13 @@ class Simon extends Component {
     }
 
     callbackRoomJoined(err, room) {
-
+        this.setState({
+            room: room,
+            roomId: room.roomId
+        })
     }
 
     callbackUserJoined(err, user) {
-
     }
 
     callbackHostSelection(err, selection) {
