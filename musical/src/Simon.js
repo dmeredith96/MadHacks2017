@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import './Simon.css';
 import RoomInfo from './RoomInfo.js';
 import { joinRoom, createRoom } from './Api';
+import { ToastContainer, toast } from 'react-toastify';
 import Button from 'muicss/lib/react/button';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 
 class Simon extends Component {
     constructor(props) {
@@ -43,6 +46,7 @@ class Simon extends Component {
         else {
             return (
                 <div className="Container">
+                    <ToastContainer />
                     <div className="Simon-container">
                         <div className="Game-info">
                             {this.state.room.hostId !== undefined && this.state.socketId == this.state.room.hostId &&
@@ -98,11 +102,11 @@ class Simon extends Component {
     }
 
     callbackReadyToStart(err, room) {
-        this.setState({currentGameStatus: 'Game is starting soon...', room: room});
+        this.setState({ currentGameStatus: 'Game is starting soon...', room: room });
     }
 
     callbackHostSelectedStart(err) {
-        this.setState({currentGameStatus: 'Host is selecting'})
+        this.setState({ currentGameStatus: 'Host is selecting' })
     }
 
     callbackRoomJoined(err, room, socketId) {
@@ -114,19 +118,19 @@ class Simon extends Component {
     }
 
     callbackUserJoined(err, user) {
-
+        toast('A new user has joined: ' + user.socketId);
     }
 
     callbackHostSelection(err, selection) {
-        this.setState({currentGameStatus: 'Host has selected'})
+        this.setState({ currentGameStatus: 'Host has selected' })
     }
 
     callbackUserGuessOpen(err) {
-        this.setState({currentGameStatus: 'You must select the same sequence as the host!'})
+        this.setState({ currentGameStatus: 'You must select the same sequence as the host!' })
     }
 
     callbackUserGuessClosed(err) {
-        this.setState({currentGameStatus: 'User submissions are closed'});
+        this.setState({ currentGameStatus: 'User submissions are closed' });
     }
 
     callbackUserHasSubmitted(err, userId) {

@@ -56,7 +56,6 @@ class App extends Component {
             </Menu>
           </div>
           <div id="Main">
-            <Route path='/' component={LandingPage}/>
             <Route path='/simon/:room?' render={(props) => (<Simon {...props} roomId={this.state.roomId} />)} />
           </div>
         </div>
