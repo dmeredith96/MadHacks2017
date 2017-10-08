@@ -18,6 +18,11 @@ body {
   background-color:#222;
 }
 
+.menu-item:hover {
+  cursor: pointer;
+  background-color: #3d3d3d;
+}
+
 .white-menu-icon {
   color: white;
   font-size: 2.5em;

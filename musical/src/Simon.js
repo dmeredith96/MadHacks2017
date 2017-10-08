@@ -20,7 +20,7 @@ class Simon extends Component {
             <div className="Container">
                 <div className="Simon-container">
                     <div className="Game-info">
-                        <h2 classname="current-gm">Current GM: {}</h2>
+                        <h2>Current GM: {}</h2>
                         <h2>GM choosing / Sequence Playing / GO!</h2>
                         <h2>Remaining Time: {}</h2>
                     </div>

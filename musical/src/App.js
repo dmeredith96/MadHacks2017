@@ -23,11 +23,11 @@ class App extends Component {
     return (
       <div className="App">
         <div className="Menu">
-          <div onClick={this.renderNewHome}>
+          <div onClick={this.renderNewHome} className="menu-item" title="Home">
             <i className="fa fa-home white-menu-icon"></i>
           </div>
           <hr/>
-          <div onClick={this.renderNewSimon}>
+          <div onClick={this.renderNewSimon} className="menu-item" title="New Simon Game">
             <i className="fa fa-gamepad white-menu-icon"></i>
           </div>
           <hr/>
