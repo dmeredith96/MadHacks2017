@@ -31,4 +31,8 @@ function hostSubmitSelection(roomId, selection) {
     socket.emit('hostSubmittedChord', {roomId: roomId, selection: selection});
 }
 
+function userSubmitSelection(roomId, selection) {
+    socket.emit('userSubmittedChord', {roomId: roomId, selection: selection});
+}
+
 export { joinRoom, createRoom, hostSubmitSelection };

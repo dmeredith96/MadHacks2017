@@ -3,6 +3,7 @@ import './Simon.css';
 import RoomInfo from './RoomInfo.js';
 import { joinRoom, createRoom, hostSubmitSelection } from './Api';
 import { ToastContainer, toast } from 'react-toastify';
+import $ from 'jquery';
 import Button from 'muicss/lib/react/button';
 import 'react-toastify/dist/ReactToastify.min.css';
 
@@ -64,20 +65,30 @@ class Simon extends Component {
                         </div>
                         <div className="Game-board">
                             <div className="gameboard-table">
-                                <input type='button' className="btn-blue" value='1' onClick={this.handleSelection} />
-                                <input type='button' className="btn-green" value='2' onClick={this.handleSelection} />
-                                <input type='button' className="btn-red" value='3' onClick={this.handleSelection} />
-                                <input type='button' className="btn-purp" value='4' onClick={this.handleSelection} />
+                                <input type='button' id='btn1' className="btn-blue" value='1' onClick={this.handleSelection} />
+                                <input type='button' id='btn2' className="btn-green" value='2' onClick={this.handleSelection} />
+                                <input type='button' id='btn3' className="btn-red" value='3' onClick={this.handleSelection} />
+                                <input type='button' id='btn4' className="btn-purp" value='4' onClick={this.handleSelection} />
                             </div>
                         </div>
-                        {this.state.isSelecting &&
+                        {this.state.isSelecting && this.state.room.hostId === this.state.socketId &&
                             <div className="game-selection">
                                 <div className="user-selection">
                                     Your current selection: {this.state.currentSelection.map(function (select, i) {
                                         return <span key={i}>{select}</span>;
                                     })}
                                 </div>
-                                <input type='button' className='btn-green' onClick={this.hostSubmit} />
+                                <input type='button' className='btn-green' value='Submit' onClick={this.hostSubmit} />
+                            </div>
+                        }
+                        {this.state.isSelecting && this.state.room.hostId !== this.state.socketId &&
+                            <div className="game-selection">
+                                <div className="user-selection">
+                                    Your current selection: {this.state.currentSelection.map(function (select, i) {
+                                        return <span key={i}>{select}</span>;
+                                    })}
+                                </div>
+                                <input type='button' className='btn-green' value='Submit' onClick={this.userSubmit} />
                             </div>
                         }
                     </div>
@@ -150,23 +161,32 @@ class Simon extends Component {
     }
 
     callbackHostSelection(err, selection) {
-        this.setState({ currentGameStatus: 'Host has selected' })
+        this.setState({ currentGameStatus: 'Host has selected' });
+        for (var i = 0; i < selection.length; i++) {
+            $('#btn' + selection[i]).css('color','#fff');
+            setTimeout(function() {
+                $('#btn' + selection[i]).css('color','unset');                
+            }, 500);
+        }
+        if (this.state.socketId !== this.state.room.hostId) {
+            this.setState({isSelecting: true})
+        }
     }
 
     callbackUserGuessOpen(err) {
-        this.setState({ currentGameStatus: 'You must select the same sequence as the host!' })
+        this.setState({ currentGameStatus: 'You must select the same sequence as the host!', remainingTime: 30 })
     }
 
     callbackUserGuessClosed(err) {
-        this.setState({ currentGameStatus: 'User submissions are closed' });
+        this.setState({ currentGameStatus: 'User submissions are closed', isSelecting: false });
     }
 
     callbackUserHasSubmitted(err, userId) {
-
+        toast('User ' + userId + ' has submitted!');
     }
 
     callbackUserDisconnected(err, socketId) {
-
+        toast('User ' + socketId + ' has disconnected');
     }
 
     callbackRoomCreated(err, roomId) {
@@ -179,11 +199,11 @@ class Simon extends Component {
     }
 
     callbackRoundHasCompleted(err, room) {
-
+        this.setState({room: room})
     }
 
     callbackMatchHasCompleted(err, room) {
-
+        this.setState({room: room});
     }
 }
 
