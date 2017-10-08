@@ -25,12 +25,19 @@ class Simon extends Component {
             (err) => this.callbackUserGuessClosed(err),
             (err, userId) => this.callbackUserHasSubmitted(err, userId),
             (err, socketId) => this.callbackUserDisconnected(err, socketId));
+        this.enterRoomId();
+    }
+
+    enterRoomId() {
+        this.state.roomId = prompt('Enter a room ID: ');
     }
 
     render() {
         if (this.state.room === null) {
             return (
-                <div className="loading-screen">Room ID Invalid!</div>
+                <div className="loading-screen">
+                    Room ID Invalid!
+                </div>
             );
         }
         else {

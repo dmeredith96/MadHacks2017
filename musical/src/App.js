@@ -8,15 +8,11 @@ import LandingPage from './LandingPage';
 
 class App extends Component {
 
-  showSettings(event) {
-
-  }
-
   renderNewHome() {
     ReactDOM.render(<LandingPage />, document.getElementById("Main"));
   }
 
-  renderNewSimon() {
+  renderNewSimon(roomId) {
     ReactDOM.render(<Simon />, document.getElementById("Main"));
   }
 
