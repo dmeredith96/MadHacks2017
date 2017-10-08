@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import './Simon.css';
 import RoomInfo from './RoomInfo.js';
+import { joinRoom, createRoom } from './Api';
 import Button from 'muicss/lib/react/button';
 
 class Simon extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            roomId: this.props.roomId || '',
+            room: null
         }
     }
 
     componentDidMount() {
-        console.log('the component mounted');
+        joinRoom(this.state.roomId, '', );
     }
 
     render() {
@@ -40,6 +42,10 @@ class Simon extends Component {
                 <RoomInfo/>
             </div>
         );
+    }
+
+    callbackBadRoomId() {
+        
     }
 }
 

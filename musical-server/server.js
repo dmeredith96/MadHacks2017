@@ -68,7 +68,7 @@ io.on('connection', function (socket) {
                 if (connections[room].hostId === socket.id) {
                     connections[room].roundCount++;
                     connections[room].currentCombination = data.selection;
-                    io.sockets.to(data.roomId).emit('hostSelection', data.selection);
+                    io.sockets.to(data.roomId).emit('hostSelection', { selection: data.selection });
                     //TODO: Set the timeout for the following function to be equal to the hostSelection timer instead of just 10 seconds
                     setTimeout(function () {
                         io.sockets.to(data.roomId).emit('userGuessOpen');
